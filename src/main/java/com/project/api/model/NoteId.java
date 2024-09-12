@@ -8,14 +8,6 @@ public class NoteId implements Serializable {
     private UUID id;
     private UUID userId;
 
-    public NoteId() {
-    }
-
-    public NoteId(UUID noteId, UUID userId) {
-        this.id = noteId;
-        this.userId = userId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
