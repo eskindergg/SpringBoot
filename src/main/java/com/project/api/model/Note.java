@@ -57,7 +57,7 @@ public class Note {
     private boolean favorite;
 
     @Column(name = "active")
-    private boolean active;
+    private boolean active = true;
 
     @Column(name = "spell_check")
     private boolean spellCheck;
