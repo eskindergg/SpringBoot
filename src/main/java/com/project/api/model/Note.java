@@ -1,9 +1,7 @@
 package com.project.api.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.project.api.core.GenerateUpdatedAtTimestamp;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -62,22 +60,19 @@ public class Note {
     @Column(name = "spell_check")
     private boolean spellCheck;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    @Generated(GenerationTime.ALWAYS)
+    @GenerateUpdatedAtTimestamp
     @Column(name = "pin_order")
     private Timestamp pinOrder;
 
-    @Generated(GenerationTime.INSERT)
+    @GenerateUpdatedAtTimestamp
     @Column(name = "date_created")
     private Timestamp dateCreated;
 
-    //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    @Column(name = "date_modified")
-    @Generated(GenerationTime.ALWAYS)
+    @GenerateUpdatedAtTimestamp
+    @Column(name = "date_modified" )
     private Timestamp dateModified;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    @Generated(GenerationTime.UPDATE)
+    @GenerateUpdatedAtTimestamp
     @Column(name = "date_archived")
     private Timestamp dateArchived;
 

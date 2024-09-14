@@ -1,12 +1,16 @@
 package com.project.api.service;
 
 import com.project.api.auth.CurrentAuthContext;
+import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
 import com.project.api.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class NoteService {
@@ -28,11 +32,16 @@ public class NoteService {
     public Note update(Note note) {
         Note fetchNote = noteRepository.getNote(note.getId(), CurrentAuthContext.getUserId());
 
-        if (fetchNote != null) {
-            return noteRepository.saveAndFlush(note);
-        }
+        try{
+            if (fetchNote != null)
+                return noteRepository.saveAndFlush(note);
 
-        return null;
+        } catch (JpaSystemException ex) {
+            SQLException sqlEx = (SQLException)ex.getCause().getCause();
+            if(Objects.equals(sqlEx.getSQLState(), "12121"))
+                throw new SyncConflictException("Using old date to update the server");
+        }
+        return note;
     }
 
     public List<Note> bulkUpdate(List<Note> notes) {

@@ -1,8 +1,13 @@
 package com.project.api.controller;
 
+import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
 import com.project.api.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
