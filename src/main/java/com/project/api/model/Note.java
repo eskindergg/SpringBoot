@@ -6,6 +6,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +26,6 @@ public class Note {
 
     @Column(name = "header")
     private String header;
-
 
     @Column(name = "colour")
     private String colour;
@@ -61,20 +61,19 @@ public class Note {
     private boolean spellCheck;
 
     @GenerateUpdatedAtTimestamp
-    @Column(name = "pin_order")
-    private Timestamp pinOrder;
+    @Column(name = "pin_order", nullable = false)
+    private Timestamp pinOrder = new Timestamp(new Date().getTime());
+
+    @Column(name = "date_created", insertable = false, nullable = false)
+    private Timestamp dateCreated = new Timestamp(new Date().getTime());
 
     @GenerateUpdatedAtTimestamp
-    @Column(name = "date_created")
-    private Timestamp dateCreated;
+    @Column(name = "date_modified", nullable = false )
+    private Timestamp dateModified = new Timestamp(new Date().getTime());
 
     @GenerateUpdatedAtTimestamp
-    @Column(name = "date_modified" )
-    private Timestamp dateModified;
-
-    @GenerateUpdatedAtTimestamp
-    @Column(name = "date_archived")
-    private Timestamp dateArchived;
+    @Column(name = "date_archived", nullable = false)
+    private Timestamp dateArchived = new Timestamp(new Date().getTime());
 
     @Column(name = "date_sync")
     private Timestamp dateSync;
