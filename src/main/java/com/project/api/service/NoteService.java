@@ -32,14 +32,15 @@ public class NoteService {
     public Note update(Note note) {
         Note fetchNote = noteRepository.getNote(note.getId(), CurrentAuthContext.getUserId());
 
-        try{
-            if (fetchNote != null)
+        if (fetchNote != null) {
+            try {
                 return noteRepository.saveAndFlush(note);
 
-        } catch (JpaSystemException ex) {
-            SQLException sqlEx = (SQLException)ex.getCause().getCause();
-            if(Objects.equals(sqlEx.getSQLState(), "12121"))
-                throw new SyncConflictException("Using old date to update the server");
+            } catch (JpaSystemException ex) {
+                SQLException sqlEx = (SQLException) ex.getCause().getCause();
+                if (Objects.equals(sqlEx.getSQLState(), "12121"))
+                    throw new SyncConflictException("Using old date to update the server");
+            }
         }
         return note;
     }
