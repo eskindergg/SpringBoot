@@ -57,4 +57,8 @@ public class Event {
         this.complete = complete;
     }
 
+    public boolean getComplete() {
+        return this.complete;
+    }
+
 }

@@ -11,4 +11,7 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     @Query("select e from Event e where e.userId = ?1")
     List<Event> getEvents(UUID userId);
+
+    @Query("select e from Event e where e.userId = ?1 AND e.id = ?2")
+    Event getEventById(UUID userId, UUID eventId);
 }
