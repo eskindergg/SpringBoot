@@ -68,7 +68,7 @@ public class Note {
     private Timestamp dateCreated = new Timestamp(new Date().getTime());
 
     @GenerateUpdatedAtTimestamp
-    @Column(name = "date_modified", nullable = false )
+    @Column(name = "date_modified", nullable = false)
     private Timestamp dateModified = new Timestamp(new Date().getTime());
 
     @GenerateUpdatedAtTimestamp

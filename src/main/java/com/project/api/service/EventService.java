@@ -23,11 +23,11 @@ public class EventService {
         return this.eventRepository.save(event);
     }
 
-    public Event update (Event event) {
+    public Event update(Event event) {
         Event fetchEvent = eventRepository.getEventById(CurrentAuthContext.getUserId(), event.getId());
 
-        if(fetchEvent !=null) {
-           return eventRepository.saveAndFlush(event) ;
+        if (fetchEvent != null) {
+            return eventRepository.saveAndFlush(event);
         }
 
         return event;
@@ -36,7 +36,7 @@ public class EventService {
     public Event delete(UUID id) {
         Event fetchEvent = eventRepository.getEventById(CurrentAuthContext.getUserId(), id);
 
-        if(fetchEvent != null)
+        if (fetchEvent != null)
             eventRepository.delete(fetchEvent);
 
         return fetchEvent;

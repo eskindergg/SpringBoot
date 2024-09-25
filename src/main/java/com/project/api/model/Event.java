@@ -53,12 +53,12 @@ public class Event {
         return complete;
     }
 
-    public void setComplete(boolean complete) {
-        this.complete = complete;
-    }
-
     public boolean getComplete() {
         return this.complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 
 }

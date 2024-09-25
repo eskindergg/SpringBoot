@@ -31,8 +31,8 @@ public class NoteController {
     public ResponseEntity<Note> put(@RequestBody Note note) {
         try {
             return new ResponseEntity<Note>(noteService.update(note), HttpStatus.OK);
-        }catch (SyncConflictException ex) {
-            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.CONFLICT );
+        } catch (SyncConflictException ex) {
+            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.CONFLICT);
         }
     }
 
