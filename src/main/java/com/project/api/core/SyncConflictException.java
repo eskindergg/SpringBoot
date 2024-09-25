@@ -1,11 +1,15 @@
 package com.project.api.core;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.project.api.model.Note;
 
-@ResponseStatus(HttpStatus.CONFLICT)
 public class SyncConflictException extends RuntimeException {
-    public SyncConflictException(String msg) {
+    private Note note;
+    public SyncConflictException(String msg, Note note) {
         super(msg);
+        this.note = note;
+    }
+
+    public Note getNote() {
+        return this.note;
     }
 }

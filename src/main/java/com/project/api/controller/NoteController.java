@@ -1,8 +1,11 @@
 package com.project.api.controller;
 
+import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
 import com.project.api.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +28,12 @@ public class NoteController {
     }
 
     @PutMapping()
-    public Note put(@RequestBody Note note) {
-        return noteService.update(note);
+    public ResponseEntity<Note> put(@RequestBody Note note) {
+        try {
+            return new ResponseEntity<Note>(noteService.update(note), HttpStatus.OK);
+        }catch (SyncConflictException ex) {
+            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.CONFLICT );
+        }
     }
 
     @PutMapping("/update")

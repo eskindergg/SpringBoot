@@ -39,7 +39,7 @@ public class NoteService {
             } catch (JpaSystemException ex) {
                 SQLException sqlEx = (SQLException) ex.getCause().getCause();
                 if (Objects.equals(sqlEx.getSQLState(), "12121"))
-                    throw new SyncConflictException("Using old date to update the server");
+                    throw new SyncConflictException("Using old date to update the server", fetchNote);
             }
         }
         return note;
