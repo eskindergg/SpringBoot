@@ -44,7 +44,7 @@ public class SecurityConfig {
 
             Map<String, Object> resourceAccess = jwt.getClaim("realm_access");
             Object client = resourceAccess.get("roles");
-            List<String> clientRoles = (List<String>) resourceAccess.get("roles");
+            List<?> clientRoles = (List<?>) resourceAccess.get("roles");
 
             return clientRoles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
