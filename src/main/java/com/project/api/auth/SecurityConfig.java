@@ -39,13 +39,12 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
+
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
-
             Map<String, Object> resourceAccess = jwt.getClaim("realm_access");
-            Object client = resourceAccess.get("roles");
             List<?> clientRoles = (List<?>) resourceAccess.get("roles");
-
             return clientRoles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                     .collect(toList());
