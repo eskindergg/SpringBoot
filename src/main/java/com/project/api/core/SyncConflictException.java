@@ -3,7 +3,7 @@ package com.project.api.core;
 import com.project.api.model.Note;
 
 public class SyncConflictException extends RuntimeException {
-    private Note note;
+    private final Note note;
 
     public SyncConflictException(String msg, Note note) {
         super(msg);
