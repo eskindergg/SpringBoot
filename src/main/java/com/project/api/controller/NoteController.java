@@ -26,8 +26,8 @@ public class NoteController {
 
     @PreAuthorize("hasRole('Write')")
     @PostMapping()
-    public Note post(@RequestBody Note note) {
-        return noteService.save(note);
+    public ResponseEntity<Note> post(@RequestBody Note note) {
+        return new ResponseEntity<>(noteService.save(note), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('Write')")
@@ -42,13 +42,17 @@ public class NoteController {
 
     @PreAuthorize("hasRole('Write')")
     @PutMapping("/update")
-    public List<Note> Update(@RequestBody List<Note> notes) {
-        return noteService.bulkUpdate(notes);
+    public ResponseEntity<List<Note>> Update(@RequestBody List<Note> notes) {
+        try {
+            return new ResponseEntity<>(noteService.bulkUpdate(notes), HttpStatus.OK);
+        } catch (SyncConflictException ex) {
+           return new ResponseEntity<>(ex.getNotes(), HttpStatus.CONFLICT) ;
+        }
     }
 
     @PreAuthorize("hasRole('Write')")
     @PostMapping("/insert")
-    public List<Note> insert(@RequestBody List<Note> notes) {
-        return noteService.bulkInsert(notes);
+    public ResponseEntity<List<Note>> insert(@RequestBody List<Note> notes) {
+        return new ResponseEntity<>(noteService.bulkInsert(notes), HttpStatus.CREATED);
     }
 }

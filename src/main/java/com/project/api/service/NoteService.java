@@ -46,7 +46,14 @@ public class NoteService {
     }
 
     public List<Note> bulkUpdate(List<Note> notes) {
-        return noteRepository.saveAll(notes);
+        try {
+            return noteRepository.saveAll(notes);
+        } catch (JpaSystemException ex) {
+            SQLException sqlEx = (SQLException) ex.getCause().getCause();
+            if (Objects.equals(sqlEx.getSQLState(), "12121"))
+                throw new SyncConflictException("Using old date to update the server", notes);
+            return notes;
+        }
     }
 
     public List<Note> bulkInsert(List<Note> notes) {
