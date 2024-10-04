@@ -49,7 +49,7 @@ public class NoteController {
         try {
             return new ResponseEntity<>(noteService.bulkUpdate(notes), HttpStatus.OK);
         } catch (SyncConflictException ex) {
-           return new ResponseEntity<>(ex.getNotes(), HttpStatus.CONFLICT) ;
+            return new ResponseEntity<>(ex.getNotes(), HttpStatus.CONFLICT);
         }
     }
 

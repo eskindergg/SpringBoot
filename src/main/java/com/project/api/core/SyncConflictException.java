@@ -22,7 +22,7 @@ public class SyncConflictException extends RuntimeException {
         return this.note;
     }
 
-    public List<Note>getNotes() {
+    public List<Note> getNotes() {
         return this.notes;
     }
 }
