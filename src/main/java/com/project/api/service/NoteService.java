@@ -1,6 +1,7 @@
 package com.project.api.service;
 
 import com.project.api.auth.CurrentAuthContext;
+import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
 import com.project.api.repository.NoteRepository;
@@ -37,9 +38,15 @@ public class NoteService {
                 return noteRepository.saveAndFlush(note);
 
             } catch (JpaSystemException ex) {
+
                 SQLException sqlEx = (SQLException) ex.getCause().getCause();
-                if (Objects.equals(sqlEx.getSQLState(), "12121"))
+
+                String SQL_STATE = sqlEx.getSQLState();
+
+                if (SQL_STATE.equals("12121"))
                     throw new SyncConflictException("Using old date to update the server", fetchNote);
+                if (SQL_STATE.equals("13131"))
+                    throw new NotFoundException(ex.getMessage(), note);
             }
         }
         return note;

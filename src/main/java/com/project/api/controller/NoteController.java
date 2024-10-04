@@ -1,5 +1,6 @@
 package com.project.api.controller;
 
+import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
 import com.project.api.service.NoteService;
@@ -37,6 +38,8 @@ public class NoteController {
             return new ResponseEntity<Note>(noteService.update(note), HttpStatus.OK);
         } catch (SyncConflictException ex) {
             return new ResponseEntity<Note>(ex.getNote(), HttpStatus.CONFLICT);
+        } catch (NotFoundException ex) {
+            return new ResponseEntity<>(ex.getNote(), HttpStatus.NOT_FOUND);
         }
     }
 
