@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@ValueGenerationType(generatedBy = UpdatedAtGenerator.class)
-public @interface GenerateUpdatedAtTimestamp {
+@ValueGenerationType(generatedBy = ColumnGenerator.class)
+public @interface DatabaseGeneratedValue {
 }

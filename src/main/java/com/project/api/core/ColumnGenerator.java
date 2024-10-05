@@ -6,7 +6,7 @@ import org.hibernate.generator.OnExecutionGenerator;
 
 import java.util.EnumSet;
 
-public class UpdatedAtGenerator implements OnExecutionGenerator {
+public class ColumnGenerator implements OnExecutionGenerator {
 
     @Override
     public boolean referenceColumnsInSql(Dialect dialect) {

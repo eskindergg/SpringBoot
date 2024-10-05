@@ -1,7 +1,8 @@
 package com.project.api.model;
 
-import com.project.api.core.GenerateUpdatedAtTimestamp;
+import com.project.api.core.DatabaseGeneratedValue;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -60,18 +61,19 @@ public class Note {
     @Column(name = "spell_check")
     private boolean spellCheck;
 
-    @GenerateUpdatedAtTimestamp
+    @DatabaseGeneratedValue
     @Column(name = "pin_order", nullable = false)
     private Timestamp pinOrder = new Timestamp(new Date().getTime());
 
+    @CreationTimestamp
     @Column(name = "date_created", insertable = false, nullable = false)
     private Timestamp dateCreated = new Timestamp(new Date().getTime());
 
-    @GenerateUpdatedAtTimestamp
+    @DatabaseGeneratedValue
     @Column(name = "date_modified", nullable = false)
     private Timestamp dateModified = new Timestamp(new Date().getTime());
 
-    @GenerateUpdatedAtTimestamp
+    @DatabaseGeneratedValue
     @Column(name = "date_archived", nullable = false)
     private Timestamp dateArchived = new Timestamp(new Date().getTime());
 
