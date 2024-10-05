@@ -39,7 +39,7 @@ public class NoteController {
         } catch (SyncConflictException ex) {
             return new ResponseEntity<Note>(ex.getNote(), HttpStatus.CONFLICT);
         } catch (NotFoundException ex) {
-            return new ResponseEntity<>(ex.getNote(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -50,6 +50,8 @@ public class NoteController {
             return new ResponseEntity<>(noteService.bulkUpdate(notes), HttpStatus.OK);
         } catch (SyncConflictException ex) {
             return new ResponseEntity<>(ex.getNotes(), HttpStatus.CONFLICT);
+        } catch (NotFoundException ex) {
+            return new ResponseEntity<>(ex.getNotes(), HttpStatus.NOT_FOUND);
         }
     }
 
