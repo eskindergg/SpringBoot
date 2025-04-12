@@ -42,4 +42,9 @@ public class EventController {
         return eventService.delete(id);
     }
 
+    @DeleteMapping()
+    public List<Event> delete(@RequestBody List<Event> events) {
+        return events;
+    }
+
 }
