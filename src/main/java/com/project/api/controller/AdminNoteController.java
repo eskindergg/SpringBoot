@@ -25,7 +25,7 @@ public class AdminNoteController {
         return adminNoteService.getNotes();
     }
 
-    @PreAuthorize("hasRole('Write')")
+    @PreAuthorize("hasRole('Admin')")
     @PostMapping()
     public ResponseEntity<Note> post(@RequestBody Note note) {
         return new ResponseEntity<>(adminNoteService.save(note), HttpStatus.CREATED);

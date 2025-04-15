@@ -31,7 +31,7 @@ public class AdminNoteService {
 
 
     public Note update(Note note) {
-        Note fetchNote = adminNoteRepository.getNote(note.getId(), CurrentAuthContext.getUserId());
+        Note fetchNote = adminNoteRepository.getNote(note.getId(), note.getUserId());
 
         if (fetchNote == null) {
             throw new NotFoundException("Either the note has been moved or deleted", note);
