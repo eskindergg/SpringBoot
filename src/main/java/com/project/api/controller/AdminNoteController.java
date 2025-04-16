@@ -60,4 +60,11 @@ public class AdminNoteController {
     public ResponseEntity<List<Note>> insert(@RequestBody List<Note> notes) {
         return new ResponseEntity<>(adminNoteService.bulkInsert(notes), HttpStatus.CREATED);
     }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('Admin')")
+    public List<Object> getUsers() {
+        return adminNoteService.getUsers();
+    }
+
 }
