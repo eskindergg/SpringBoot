@@ -1,5 +1,6 @@
 package com.project.api.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
@@ -57,7 +58,7 @@ public class NoteController {
 
     @PreAuthorize("hasRole('Write')")
     @PostMapping("/insert")
-    public ResponseEntity<List<Note>> insert(@RequestBody List<Note> notes) {
+    public ResponseEntity<List<Note>> insert(@RequestBody List<Note> notes) throws JsonProcessingException {
         return new ResponseEntity<>(noteService.bulkInsert(notes), HttpStatus.CREATED);
     }
 }

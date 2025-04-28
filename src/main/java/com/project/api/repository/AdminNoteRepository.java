@@ -5,6 +5,7 @@ import com.project.api.model.NoteId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
+import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -27,10 +28,6 @@ public interface AdminNoteRepository extends JpaRepository<Note, NoteId> {
             String p_header,
             String p_text,
             String p_colour,
-            Integer p_height,
-            Integer p_width,
-            Integer p_top,
-            Integer p_left,
             Timestamp p_date_created,
             Timestamp p_date_modified,
             Timestamp p_date_archived,
@@ -41,7 +38,9 @@ public interface AdminNoteRepository extends JpaRepository<Note, NoteId> {
             Boolean p_spell_check,
             String p_owner,
             Boolean p_favorite,
-            Timestamp p_date_sync,
             Boolean p_pinned
     );
+
+    @Procedure(name = "admin_bulk_update")
+    List<String> admin_bulk_update(@Param("json_notes") String notesJson);
 }

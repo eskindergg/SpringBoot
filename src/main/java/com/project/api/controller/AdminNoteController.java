@@ -1,5 +1,6 @@
 package com.project.api.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
@@ -45,7 +46,7 @@ public class AdminNoteController {
 
     @PreAuthorize("hasRole('Admin')")
     @PutMapping("/update")
-    public ResponseEntity<List<Note>> Update(@RequestBody List<Note> notes) {
+    public ResponseEntity<List<Note>> Update(@RequestBody List<Note> notes) throws JsonProcessingException {
         try {
             return new ResponseEntity<>(adminNoteService.bulkUpdate(notes), HttpStatus.OK);
         } catch (SyncConflictException ex) {
@@ -58,6 +59,7 @@ public class AdminNoteController {
     @PreAuthorize("hasRole('Admin')")
     @PostMapping("/insert")
     public ResponseEntity<List<Note>> insert(@RequestBody List<Note> notes) {
+        List<Note> x = adminNoteService.bulkInsert(notes);
         return new ResponseEntity<>(adminNoteService.bulkInsert(notes), HttpStatus.CREATED);
     }
 

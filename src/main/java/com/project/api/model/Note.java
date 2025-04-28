@@ -30,19 +30,6 @@ public class Note {
 
     @Column(name = "colour")
     private String colour;
-
-    @Column(name = "height")
-    private Integer height;
-
-    @Column(name = "width")
-    private Integer width;
-
-    @Column(name = "`left`")
-    private Integer left;
-
-    @Column(name = "top")
-    private Integer top;
-
     @Column(name = "selection")
     private String selection;
 
@@ -76,9 +63,6 @@ public class Note {
     @DatabaseGeneratedValue
     @Column(name = "date_archived", nullable = false)
     private Timestamp dateArchived = new Timestamp(new Date().getTime());
-
-    @Column(name = "date_sync")
-    private Timestamp dateSync;
 
     @Column(name = "owner")
     private String owner;
@@ -116,38 +100,6 @@ public class Note {
 
     public void setColour(String colour) {
         this.colour = colour;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    public Integer getWidth() {
-        return width;
-    }
-
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
-
-    public Integer getLeft() {
-        return left;
-    }
-
-    public void setLeft(Integer left) {
-        this.left = left;
-    }
-
-    public Integer getTop() {
-        return top;
-    }
-
-    public void setTop(Integer top) {
-        this.top = top;
     }
 
     public String getSelection() {
@@ -228,14 +180,6 @@ public class Note {
 
     public void setDateArchived(Timestamp dateArchived) {
         this.dateArchived = dateArchived;
-    }
-
-    public Timestamp getDateSync() {
-        return dateSync;
-    }
-
-    public void setDateSync(Timestamp dateSync) {
-        this.dateSync = dateSync;
     }
 
     public String getOwner() {
