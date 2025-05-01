@@ -59,6 +59,6 @@ public class NoteController {
     @PreAuthorize("hasRole('Write')")
     @PostMapping("/insert")
     public ResponseEntity<List<Note>> insert(@RequestBody List<Note> notes) throws JsonProcessingException {
-        return new ResponseEntity<>(noteService.bulkInsert(notes), HttpStatus.CREATED);
+        return new ResponseEntity<List<Note>>(noteService.bulkInsert(notes), HttpStatus.CREATED);
     }
 }
