@@ -19,5 +19,5 @@ public interface NoteRepository extends JpaRepository<Note, NoteId> {
 
     @Procedure(name = "note_bulk_insert")
 //    @Query(value = "CALL admin_upsert(:json_notes)", nativeQuery = true)
-    List<Note> note_bulk_insrt(@Param("json_notes") String notesJson);
+    List<Note> note_bulk_insert(@Param("json_notes") String notesJson);
 }

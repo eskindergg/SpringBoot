@@ -86,16 +86,10 @@ public class NoteService {
         }
     }
     @Transactional
-    @SuppressWarnings("unchecked")
     public List<Note> bulkInsert(List<Note> notes) throws JsonProcessingException {
 
         String notesJson = NoteJsonHelper.convertNotesToJson(notes);
 
-        StoredProcedureQuery query = entityManager
-                .createStoredProcedureQuery("note_bulk_insert")
-                .registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
-                .setParameter(1, notesJson);
-
-        return query.getResultList();
+        return this.noteRepository.note_bulk_insert(notesJson);
     }
 }
