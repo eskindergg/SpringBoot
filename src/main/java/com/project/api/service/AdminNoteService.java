@@ -38,19 +38,12 @@ public class AdminNoteService {
         return this.adminNoteRepository.save(note);
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional
-    public List<Note> update(Note note) {
+    public Note update(Note note) {
         try {
         String noteJson = NoteJsonHelper.convertNoteToJson(note);
 
-        StoredProcedureQuery query = entityManager
-                .createStoredProcedureQuery("admin_update_note")
-                .registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
-                .setParameter(1, noteJson);
-
-        return query.getResultList();
-
+            return this.adminNoteRepository.admin_update_note(noteJson);
         } catch (JpaSystemException ex) {
 
             SQLException sqlEx = (SQLException) ex.getCause().getCause();

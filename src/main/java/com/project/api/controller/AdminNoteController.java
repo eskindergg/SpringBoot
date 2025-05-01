@@ -34,13 +34,13 @@ public class AdminNoteController {
 
     @PreAuthorize("hasRole('Admin')")
     @PutMapping()
-    public ResponseEntity<List<Note>> put(@RequestBody Note note) {
+    public ResponseEntity<Note> put(@RequestBody Note note) {
         try {
-            return new ResponseEntity<List<Note>>(adminNoteService.update(note), HttpStatus.OK);
+            return new ResponseEntity<Note>(adminNoteService.update(note), HttpStatus.OK);
         } catch (SyncConflictException ex) {
-            return new ResponseEntity<List<Note>>(ex.getNotes(), HttpStatus.CONFLICT);
+            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.CONFLICT);
         } catch (NotFoundException ex) {
-            return new ResponseEntity<List<Note>>(ex.getNotes(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.NOT_FOUND);
         }
     }
 
