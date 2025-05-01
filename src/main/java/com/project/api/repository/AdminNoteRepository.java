@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,26 +20,9 @@ public interface AdminNoteRepository extends JpaRepository<Note, NoteId> {
     @Query("SELECT n.owner, n.userId, count(n.userId) FROM Note as n GROUP BY n.owner, n.userId")
     List<Object> getUsers();
 
-    @Procedure(procedureName = "upsert_note")
-    Object[] updateNoteUser(
-            String p_note_id,
-            String p_user_id,
-            String p_header,
-            String p_text,
-            String p_colour,
-            Timestamp p_date_created,
-            Timestamp p_date_modified,
-            Timestamp p_date_archived,
-            Timestamp p_pin_order,
-            Boolean p_archived,
-            Boolean p_active,
-            String p_selection,
-            Boolean p_spell_check,
-            String p_owner,
-            Boolean p_favorite,
-            Boolean p_pinned
-    );
+    @Procedure(name = "admin_update_note")
+    String admin_update_note(@Param("json_note") String note_json);
 
     @Procedure(name = "admin_bulk_update")
-    List<String> admin_bulk_update(@Param("json_notes") String notesJson);
+    List<Note> admin_bulk_update(@Param("json_notes") String notesJson);
 }

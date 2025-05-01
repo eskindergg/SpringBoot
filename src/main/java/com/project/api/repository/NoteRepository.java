@@ -17,7 +17,7 @@ public interface NoteRepository extends JpaRepository<Note, NoteId> {
     @Query("select n from Note n where n.id = ?1 AND n.userId = ?2")
     Note getNote(UUID noteId, UUID userId);
 
-    @Procedure(name = "admin_upsert")
+    @Procedure(name = "note_bulk_insert")
 //    @Query(value = "CALL admin_upsert(:json_notes)", nativeQuery = true)
-    List<String> admin_upsert(@Param("json_notes") String notesJson);
+    List<Note> note_bulk_insrt(@Param("json_notes") String notesJson);
 }
