@@ -1,13 +1,16 @@
 package com.project.api.core.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.OffsetDateTimeSerializer;
 import com.project.api.model.Note;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +22,35 @@ public class NoteJsonHelper {
     private static final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .setTimeZone(TimeZone.getDefault());
+            .setTimeZone(TimeZone.getDefault())
+            .setSerializationInclusion(JsonInclude.Include.ALWAYS)
+            .registerModule(new SimpleModule() {{
+                setSerializerModifier(new BeanSerializerModifier() {
+                    @Override
+                    public JsonSerializer<?> modifySerializer(
+                            SerializationConfig config,
+                            BeanDescription beanDesc,
+                            JsonSerializer<?> serializer
+                    ) {
+                        // Cast to avoid '? capture' error
+                        @SuppressWarnings("unchecked")
+                        JsonSerializer<Object> casted = (JsonSerializer<Object>) serializer;
+
+                        return new JsonSerializer<Object>() {
+                            @Override
+                            public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers)
+                                    throws IOException {
+                                if (value == null) {
+                                    gen.writeString("");
+                                } else {
+                                    casted.serialize(value, gen, serializers);
+                                }
+                            }
+                        };
+                    }
+                });
+            }});
+
     public static String convertNotesToJson(List<Note> notes) {
         try {
             return objectMapper.writeValueAsString(notes);
