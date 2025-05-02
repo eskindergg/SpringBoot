@@ -18,7 +18,7 @@ public class Note {
     @Id
     @Column(name = "note_id")
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID noteId;
+    private UUID id;
 
     @Id
     @Column(name = "user_id")
@@ -70,12 +70,12 @@ public class Note {
     @Column(name = "text", length = 16777215, columnDefinition = "mediumtext")
     private String text;
 
-    public UUID getNoteId() {
-        return noteId;
+    public UUID getId() {
+        return id;
     }
 
-    public void setNoteId(UUID noteId) {
-        this.noteId = noteId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getHeader() {
