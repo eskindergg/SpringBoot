@@ -2,7 +2,6 @@ package com.project.api.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.project.api.auth.CurrentAuthContext;
 import com.project.api.core.Constants;
 import com.project.api.core.NotFoundException;
@@ -11,8 +10,6 @@ import com.project.api.core.utils.NoteJsonHelper;
 import com.project.api.model.Note;
 import com.project.api.repository.NoteRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
@@ -45,7 +42,7 @@ public class NoteService {
 
     @Transactional
     public Note update(Note note) {
-        Note fetchNote = noteRepository.getNote(note.getId(), CurrentAuthContext.getUserId());
+        Note fetchNote = noteRepository.getNote(note.getNoteId(), CurrentAuthContext.getUserId());
 
         if (fetchNote == null) {
             throw new NotFoundException("Either the note has been moved or deleted", note);
