@@ -59,16 +59,22 @@ public class AdminNoteService {
     }
 
     @Transactional
-    @SuppressWarnings("unchecked")
     public List<Note> bulkUpdate(List<Note> notes) throws JsonProcessingException {
-        String notesJson = NoteJsonHelper.convertNotesToJson(notes);
+        try {
+            String notesJson = NoteJsonHelper.convertNotesToJson(notes);
+            return this.adminNoteRepository.admin_bulk_update(notesJson);
+        } catch (JpaSystemException ex) {
 
-        StoredProcedureQuery query = entityManager
-                .createStoredProcedureQuery("admin_bulk_update")
-                .registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
-                .setParameter(1, notesJson);
+            SQLException sqlEx = (SQLException) ex.getCause().getCause();
+            String SQL_STATE = sqlEx.getSQLState();
 
-        return query.getResultList();
+            if (SQL_STATE.equals(Constants.SQL_STATE_CONFLICT))
+                throw new SyncConflictException("Using old date to update the server", notes);
+
+            if (SQL_STATE.equals(Constants.SQL_NOT_FOUND))
+                throw new NotFoundException(ex.getMessage(), notes);
+        }
+        return null;
     }
 
     @Transactional
