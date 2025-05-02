@@ -17,6 +17,7 @@ import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,7 +42,10 @@ public class AdminNoteService {
     @Transactional
     public Note update(Note note) {
         try {
-        String noteJson = NoteJsonHelper.convertNoteToJson(note);
+            List<Note> singleNoteList = new ArrayList<>();
+            singleNoteList.add(note);
+
+            String noteJson = NoteJsonHelper.convertNotesToJson(singleNoteList);
 
             return this.adminNoteRepository.admin_update_note(noteJson);
         } catch (JpaSystemException ex) {
