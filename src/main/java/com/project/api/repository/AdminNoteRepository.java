@@ -20,7 +20,7 @@ public interface AdminNoteRepository extends JpaRepository<Note, NoteId> {
     @Query("SELECT n.owner, n.userId, count(n.userId) FROM Note as n GROUP BY n.owner, n.userId")
     List<Object> getUsers();
 
-    @Procedure(name = "admin_update_note")
+    @Procedure(name = "admin_bulk_update")
     Note admin_update_note(@Param("json_note") String note_json);
 
     @Procedure(name = "admin_bulk_update")

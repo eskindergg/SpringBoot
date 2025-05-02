@@ -46,10 +46,7 @@ public class AdminNoteService {
             singleNoteList.add(note);
 
             String noteJson = NoteJsonHelper.convertNotesToJson(singleNoteList);
-            System.out.println("======================================================================================================");
-            System.out.println(noteJson);
-            System.out.println("======================================================================================================");
-            return this.adminNoteRepository.admin_bulk_update(noteJson).get(0);
+            return this.adminNoteRepository.admin_update_note(noteJson);
         } catch (JpaSystemException ex) {
 
             SQLException sqlEx = (SQLException) ex.getCause().getCause();
