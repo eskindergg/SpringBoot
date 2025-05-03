@@ -39,27 +39,27 @@ public class AdminNoteService {
         return this.adminNoteRepository.save(note);
     }
 
-    @Transactional
-    public Note update(Note note) {
-        try {
-            List<Note> singleNoteList = new ArrayList<>();
-            singleNoteList.add(note);
-
-            String noteJson = NoteJsonHelper.convertNotesToJson(singleNoteList);
-            return this.adminNoteRepository.admin_update_note(noteJson);
-        } catch (JpaSystemException ex) {
-
-            SQLException sqlEx = (SQLException) ex.getCause().getCause();
-            String SQL_STATE = sqlEx.getSQLState();
-
-            if (SQL_STATE.equals(Constants.SQL_STATE_CONFLICT))
-                throw new SyncConflictException("Using old date to update the server", note);
-
-            if (SQL_STATE.equals(Constants.SQL_NOT_FOUND))
-                throw new NotFoundException(ex.getMessage(), note);
-        }
-        return null;
-    }
+//    @Transactional
+//    public Note update(Note note) {
+//        try {
+//            List<Note> singleNoteList = new ArrayList<>();
+//            singleNoteList.add(note);
+//
+//            String noteJson = NoteJsonHelper.convertNotesToJson(singleNoteList);
+//            return this.adminNoteRepository.admin_update_note(noteJson);
+//        } catch (JpaSystemException ex) {
+//
+//            SQLException sqlEx = (SQLException) ex.getCause().getCause();
+//            String SQL_STATE = sqlEx.getSQLState();
+//
+//            if (SQL_STATE.equals(Constants.SQL_STATE_CONFLICT))
+//                throw new SyncConflictException("Using old date to update the server", note);
+//
+//            if (SQL_STATE.equals(Constants.SQL_NOT_FOUND))
+//                throw new NotFoundException(ex.getMessage(), note);
+//        }
+//        return null;
+//    }
 
     @Transactional
     public List<Note> bulkUpdate(List<Note> notes) throws JsonProcessingException {

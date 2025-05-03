@@ -71,7 +71,9 @@ public class NoteService {
     @Transactional
     public List<Note> bulkUpdate(List<Note> notes) {
         try {
-            return noteRepository.saveAll(notes);
+            String notesJson = NoteJsonHelper.convertNotesToJson(notes);
+            return noteRepository.note_bulk_upsert(notesJson);
+//            return noteRepository.saveAll(notes);
         } catch (JpaSystemException ex) {
             SQLException sqlEx = (SQLException) ex.getCause().getCause();
             String SQL_STATE = sqlEx.getSQLState();

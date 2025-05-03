@@ -33,18 +33,6 @@ public class AdminNoteController {
     }
 
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping()
-    public ResponseEntity<Note> put(@RequestBody Note note) {
-        try {
-            return new ResponseEntity<Note>(adminNoteService.update(note), HttpStatus.OK);
-        } catch (SyncConflictException ex) {
-            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.CONFLICT);
-        } catch (NotFoundException ex) {
-            return new ResponseEntity<Note>(ex.getNote(), HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PreAuthorize("hasRole('Admin')")
     @PutMapping("/update")
     public ResponseEntity<List<Note>> Update(@RequestBody List<Note> notes) throws JsonProcessingException {
         try {
