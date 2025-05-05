@@ -71,6 +71,7 @@ public class NoteService {
     @Transactional
     public List<Note> bulkUpdate(List<Note> notes) {
         try {
+            notes.forEach(note -> note.setUserId(CurrentAuthContext.getUserId()));
             String notesJson = NoteJsonHelper.convertNotesToJson(notes);
             return noteRepository.note_bulk_upsert(CurrentAuthContext.getUserId().toString(),CurrentAuthContext.getName(), notesJson);
         } catch (JpaSystemException ex) {
