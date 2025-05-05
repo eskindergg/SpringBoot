@@ -24,8 +24,7 @@ public class CurrentAuthContext {
     }
 
     public static String getName() {
-        return (String) extractClaim().get("given_name");
+        return extractClaim().get("name") != null ? (String) extractClaim().get("name") : (String) extractClaim().get("preferred_username");
     }
-
 
 }
