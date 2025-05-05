@@ -24,13 +24,10 @@ public class NoteService {
 
     @Autowired
     private NoteRepository noteRepository;
-    @Autowired
-    private EntityManager entityManager;
-    @Autowired
-    private ObjectMapper objectMapper;
 
+    @Transactional
     public List<Note> getNotes() {
-        return this.noteRepository.getNotes(CurrentAuthContext.getUserId());
+        return this.noteRepository.getUserNotes(CurrentAuthContext.getUserId().toString());
     }
 
     @Transactional
