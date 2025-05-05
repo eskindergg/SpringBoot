@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/notes")
@@ -52,8 +53,8 @@ public class AdminNoteController {
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('Admin')")
-    public List<Object> getUsers() {
-        return adminNoteService.getUsers();
+    public List<Map<String, Object>> getUsers() {
+        return adminNoteService.getUsersNotesCount();
     }
 
 }

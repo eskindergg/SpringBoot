@@ -10,15 +10,15 @@ import com.project.api.core.utils.NoteJsonHelper;
 import com.project.api.model.Note;
 import com.project.api.repository.AdminNoteRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.StoredProcedureQuery;
+import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminNoteService {
@@ -91,8 +91,12 @@ public class AdminNoteService {
     }
 
     @Transactional
-    public List<Object> getUsers() {
-        return this.adminNoteRepository.getUsersNotesCount();
-//        return this.adminNoteRepository.getUsers();
+    public List<Map<String, Object>> getUsersNotesCount() {
+        Query query = entityManager.createNativeQuery("CALL getUsersNotesCount()");
+        query.unwrap(org.hibernate.query.NativeQuery.class)
+                .setResultTransformer(org.hibernate.transform.AliasToEntityMapResultTransformer.INSTANCE);
+
+        List<Map<String, Object>> result = query.getResultList();
+        return result;
     }
 }
