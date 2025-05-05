@@ -2,17 +2,15 @@ package com.project.api.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.project.api.auth.CurrentAuthContext;
 import com.project.api.core.Constants;
 import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
+import com.project.api.core.utils.NoteFactory;
 import com.project.api.core.utils.NoteJsonHelper;
 import com.project.api.model.Note;
 import com.project.api.repository.NoteRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
@@ -71,9 +69,8 @@ public class NoteService {
     @Transactional
     public List<Note> bulkUpdate(List<Note> notes) {
         try {
-            notes.forEach(note -> note.setUserId(CurrentAuthContext.getUserId()));
-            String notesJson = NoteJsonHelper.convertNotesToJson(notes);
-            return noteRepository.note_bulk_upsert(CurrentAuthContext.getUserId().toString(),CurrentAuthContext.getName(), notesJson);
+            String notesJson = NoteJsonHelper.convertNotesToJson(notes.stream().map(NoteFactory::create).toList());
+            return noteRepository.note_bulk_upsert(CurrentAuthContext.getUserId().toString(), CurrentAuthContext.getName(), notesJson);
         } catch (JpaSystemException ex) {
             SQLException sqlEx = (SQLException) ex.getCause().getCause();
             String SQL_STATE = sqlEx.getSQLState();
@@ -87,6 +84,7 @@ public class NoteService {
             return notes;
         }
     }
+
     @Transactional
     public List<Note> bulkInsert(List<Note> notes) throws JsonProcessingException {
 
