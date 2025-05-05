@@ -23,6 +23,6 @@ public interface AdminNoteRepository extends JpaRepository<Note, NoteId> {
     @Procedure(name = "admin_bulk_update")
     List<Note> admin_bulk_update(@Param("json_notes") String notesJson);
 
-    @Procedure(name = "getUserNotesCount")
-    List<Object> getUserNotesCount();
+    @Procedure(name = "getUsersNotesCount")
+    List<Object> getUsersNotesCount();
 }
