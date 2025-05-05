@@ -31,7 +31,7 @@ public class AdminNoteService {
     private ObjectMapper objectMapper;
 
     public List<Note> getNotes() {
-        return this.adminNoteRepository.getNotes();
+        return this.adminNoteRepository.getAdminNotes();
     }
 
     @Transactional

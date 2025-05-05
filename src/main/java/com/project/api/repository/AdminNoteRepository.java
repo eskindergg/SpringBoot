@@ -14,6 +14,9 @@ public interface AdminNoteRepository extends JpaRepository<Note, NoteId> {
     @Query("select n from Note n ORDER BY n.dateModified DESC")
     List<Note> getNotes();
 
+    @Procedure(name = "getAdminNotes")
+    List<Note> getAdminNotes();
+
     @Query("select n from Note n where n.id = ?1")
     Note getNote(UUID noteId, UUID userId);
 
