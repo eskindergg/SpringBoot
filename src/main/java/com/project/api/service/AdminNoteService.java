@@ -30,6 +30,7 @@ public class AdminNoteService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Transactional
     public List<Note> getNotes() {
         return this.adminNoteRepository.getAdminNotes();
     }
