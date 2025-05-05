@@ -90,6 +90,7 @@ public class AdminNoteService {
     }
 
     public List<Object> getUsers() {
-        return this.adminNoteRepository.getUsers();
+        return this.adminNoteRepository.getUserNotesCount();
+//        return this.adminNoteRepository.getUsers();
     }
 }
