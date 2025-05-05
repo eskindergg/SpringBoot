@@ -72,8 +72,7 @@ public class NoteService {
     public List<Note> bulkUpdate(List<Note> notes) {
         try {
             String notesJson = NoteJsonHelper.convertNotesToJson(notes);
-            return noteRepository.note_bulk_upsert(notesJson);
-//            return noteRepository.saveAll(notes);
+            return noteRepository.note_bulk_upsert(CurrentAuthContext.getUserId().toString(),CurrentAuthContext.getName(), notesJson);
         } catch (JpaSystemException ex) {
             SQLException sqlEx = (SQLException) ex.getCause().getCause();
             String SQL_STATE = sqlEx.getSQLState();

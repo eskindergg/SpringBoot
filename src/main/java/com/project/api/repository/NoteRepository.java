@@ -21,5 +21,5 @@ public interface NoteRepository extends JpaRepository<Note, NoteId> {
     List<Note> note_bulk_insert(@Param("json_notes") String notesJson);
 
     @Procedure(name = "note_bulk_upsert")
-    List<Note> note_bulk_upsert(@Param("json_notes") String notesJson);
+    List<Note> note_bulk_upsert(@Param("user_id") String user_id,@Param("owner") String owner,@Param("json_notes") String notesJson);
 }
