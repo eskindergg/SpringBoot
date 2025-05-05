@@ -1,7 +1,6 @@
 package com.project.api.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.api.auth.CurrentAuthContext;
 import com.project.api.core.Constants;
 import com.project.api.core.NotFoundException;
@@ -10,7 +9,6 @@ import com.project.api.core.utils.NoteFactory;
 import com.project.api.core.utils.NoteJsonHelper;
 import com.project.api.model.Note;
 import com.project.api.repository.NoteRepository;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
@@ -64,7 +62,7 @@ public class NoteService {
     }
 
     @Transactional
-    public List<Note> bulkUpdate(List<Note> notes) {
+    public List<Note> upsert(List<Note> notes) {
         try {
             String notesJson = NoteJsonHelper.convertNotesToJson(notes.stream().map(NoteFactory::create).toList());
             return noteRepository.note_bulk_upsert(CurrentAuthContext.getUserId().toString(), CurrentAuthContext.getName(), notesJson);

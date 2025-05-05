@@ -48,7 +48,7 @@ public class NoteController {
     @PutMapping("/update")
     public ResponseEntity<List<Note>> Update(@RequestBody List<Note> notes) {
         try {
-            return new ResponseEntity<>(noteService.bulkUpdate(notes), HttpStatus.OK);
+            return new ResponseEntity<>(noteService.upsert(notes), HttpStatus.OK);
         } catch (SyncConflictException ex) {
             return new ResponseEntity<>(ex.getNotes(), HttpStatus.CONFLICT);
         } catch (NotFoundException ex) {
