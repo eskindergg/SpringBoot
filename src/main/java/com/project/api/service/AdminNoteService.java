@@ -89,6 +89,7 @@ public class AdminNoteService {
         return adminNoteRepository.saveAll(notes);
     }
 
+    @Transactional
     public List<Object> getUsers() {
         return this.adminNoteRepository.getUsersNotesCount();
 //        return this.adminNoteRepository.getUsers();
