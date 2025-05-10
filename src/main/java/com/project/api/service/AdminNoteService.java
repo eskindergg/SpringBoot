@@ -6,9 +6,11 @@ import com.project.api.auth.CurrentAuthContext;
 import com.project.api.core.Constants;
 import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
-import com.project.api.core.utils.NoteJsonHelper;
+import com.project.api.core.utils.JsonHelper;
 import com.project.api.model.Note;
+import com.project.api.model.User;
 import com.project.api.repository.AdminNoteRepository;
+import com.project.api.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class AdminNoteService {
 
     @Autowired
     private AdminNoteRepository adminNoteRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private EntityManager entityManager;
     @Autowired
@@ -65,7 +69,7 @@ public class AdminNoteService {
     @Transactional
     public List<Note> bulkUpdate(List<Note> notes) throws JsonProcessingException {
         try {
-            String notesJson = NoteJsonHelper.convertNotesToJson(notes);
+            String notesJson = JsonHelper.convertToJson(notes);
             return this.adminNoteRepository.admin_bulk_update(notesJson);
         } catch (JpaSystemException ex) {
 
@@ -98,5 +102,16 @@ public class AdminNoteService {
 
         List<Map<String, Object>> result = query.getResultList();
         return result;
+    }
+
+    @Transactional
+    public List<User> updateUsers(List<User> users) {
+        String usersJson = JsonHelper.convertToJson(users);
+        return this.userRepository.users_bulk_upsert(usersJson);
+    }
+
+    @Transactional
+    public List<User> getUsers() {
+        return this.userRepository.getUsers();
     }
 }

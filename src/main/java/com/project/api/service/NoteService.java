@@ -5,8 +5,8 @@ import com.project.api.auth.CurrentAuthContext;
 import com.project.api.core.Constants;
 import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
+import com.project.api.core.utils.JsonHelper;
 import com.project.api.core.utils.NoteFactory;
-import com.project.api.core.utils.NoteJsonHelper;
 import com.project.api.model.Note;
 import com.project.api.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,7 @@ public class NoteService {
     @Transactional
     public List<Note> upsert(List<Note> notes) {
         try {
-            String notesJson = NoteJsonHelper.convertNotesToJson(notes.stream().map(NoteFactory::create).toList());
+            String notesJson = JsonHelper.convertToJson(notes.stream().map(NoteFactory::create).toList());
             return noteRepository.note_bulk_upsert(CurrentAuthContext.getUserId().toString(), CurrentAuthContext.getName(), notesJson);
         } catch (JpaSystemException ex) {
             SQLException sqlEx = (SQLException) ex.getCause().getCause();
@@ -83,7 +83,7 @@ public class NoteService {
     @Transactional
     public List<Note> bulkInsert(List<Note> notes) throws JsonProcessingException {
 
-        String notesJson = NoteJsonHelper.convertNotesToJson(notes);
+        String notesJson = JsonHelper.convertToJson(notes);
 
         return this.noteRepository.note_bulk_insert(notesJson);
     }

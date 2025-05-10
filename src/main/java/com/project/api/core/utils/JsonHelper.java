@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.TimeZone;
 
-public class NoteJsonHelper {
+public class JsonHelper {
 
     private static final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
@@ -46,33 +46,33 @@ public class NoteJsonHelper {
                 });
             }});
 
-    public static String convertNotesToJson(List<Note> notes) {
+    public static <T> String convertToJson(List<T> lists) {
         try {
-            return objectMapper.writeValueAsString(notes);
+            return objectMapper.writeValueAsString(lists);
         } catch (Exception e) {
             throw new RuntimeException("Error serializing notes to JSON", e);
         }
     }
 
-    public static String convertNoteToJson(Note note) {
+    public static <T> String convertToJson(T item) {
         try {
-            return objectMapper.writeValueAsString(note);
+            return objectMapper.writeValueAsString(item);
         } catch (Exception e) {
             throw new RuntimeException("Error serializing notes to JSON", e);
         }
     }
 
-    public static List<Note> parseNotesFromJson(String json) {
+    public static <T> List<T> parseNotesFromJson(String json) {
         try {
-            return objectMapper.readValue(json, new com.fasterxml.jackson.core.type.TypeReference<List<Note>>() {});
+            return objectMapper.readValue(json, new com.fasterxml.jackson.core.type.TypeReference<List<T>>() {});
         } catch (Exception e) {
             throw new RuntimeException("Error parsing notes from JSON", e);
         }
     }
 
-    public static Note parseNoteFromJson(String json) {
+    public static <T> T parseNoteFromJson(String json) {
         try {
-            return objectMapper.readValue(json, new com.fasterxml.jackson.core.type.TypeReference<Note>() {});
+            return objectMapper.readValue(json, new com.fasterxml.jackson.core.type.TypeReference<T>() {});
         } catch (Exception e) {
             throw new RuntimeException("Error parsing note from JSON", e);
         }

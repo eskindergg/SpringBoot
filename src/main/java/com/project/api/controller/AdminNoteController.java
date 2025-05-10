@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.api.core.NotFoundException;
 import com.project.api.core.SyncConflictException;
 import com.project.api.model.Note;
+import com.project.api.model.User;
 import com.project.api.service.AdminNoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,22 @@ public class AdminNoteController {
         return new ResponseEntity<>(adminNoteService.bulkInsert(notes), HttpStatus.CREATED);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/usersinfo")
     @PreAuthorize("hasRole('Admin')")
     public List<Map<String, Object>> getUsers() {
         return adminNoteService.getUsersNotesCount();
+    }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(adminNoteService.getUsers(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('Admin')")
+    @PostMapping("/users")
+    public ResponseEntity<List<User>> upsert(@RequestBody List<User> users) {
+        return new ResponseEntity<>(adminNoteService.updateUsers(users), HttpStatus.OK);
     }
 
 }
