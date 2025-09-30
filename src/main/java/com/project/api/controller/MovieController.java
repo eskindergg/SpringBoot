@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -33,6 +34,11 @@ public class MovieController {
     @PutMapping()
     public List<Object> put(@RequestBody List<Object> movies) throws JsonProcessingException {
         return movieService.bulkUpdate(movies);
+    }
+
+    @PutMapping("/upsert")
+    public List<Map<String, Object>> upsert(@RequestBody String movie) throws JsonProcessingException {
+        return movieService.movieUpsert(movie);
     }
 
     @PutMapping("/toggle")
