@@ -22,7 +22,7 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping()
-    public List<Object> get() throws JsonProcessingException {
+    public List<Map<String, Object>> get() {
         return movieService.getUserMovies();
     }
 
