@@ -169,6 +169,26 @@ public List<Map<String, Object>> movieUpsert(String movie) {
 }
 
     @Transactional
+    public List<Map<String, Object>> populateMovies(String movies) {
+
+        String sql = "CALL populate_movies(?)";
+        Query query = entityManager.createNativeQuery(sql, Tuple.class);
+        query.setParameter(1, movies);
+        @SuppressWarnings("unchecked")
+        List<Tuple> tupleResults = query.getResultList();
+        return tupleResults.stream()
+                .map(tuple -> {
+                    Map<String, Object> rowMap = new java.util.HashMap<>();
+                    for (TupleElement<?> element : tuple.getElements()) {
+                        String alias = element.getAlias();
+                        Object value = tuple.get(alias);
+                        rowMap.put(alias, value);
+                    }
+                    return rowMap;
+                })
+                .collect(Collectors.toList());
+    }
+    @Transactional
     public List<User> getUsers() {
         return this.userRepository.getUsers();
     }

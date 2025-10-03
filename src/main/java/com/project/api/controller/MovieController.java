@@ -41,6 +41,11 @@ public class MovieController {
         return movieService.movieUpsert(movie);
     }
 
+    @PostMapping("/populate")
+    public List<Map<String, Object>> populate(@RequestBody String movies) throws JsonProcessingException {
+        return movieService.populateMovies(movies);
+    }
+
     @PutMapping("/toggle")
     public Event toggle(@RequestBody Event event) {
         event.setComplete(!event.getComplete());
