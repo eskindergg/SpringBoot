@@ -28,7 +28,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChainPublic(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auths) -> auths
-                        .requestMatchers("/movies/**").permitAll()
+                        .requestMatchers("/api/movies/**").permitAll()
                 )
                 .cors(cors -> cors.configurationSource(corsConfig));
         return http.build();
