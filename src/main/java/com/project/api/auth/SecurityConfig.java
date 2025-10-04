@@ -3,7 +3,6 @@ package com.project.api.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,19 +23,7 @@ public class SecurityConfig {
     CorsConfig corsConfig;
 
     @Bean
-    @Order(1)
-    public SecurityFilterChain filterChainPublic(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((auths) -> auths
-                        .requestMatchers("/api/movies/**").permitAll()
-                )
-                .cors(cors -> cors.configurationSource(corsConfig));
-        return http.build();
-    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain filterChainPrivate(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auths) -> auths
                         .requestMatchers("/**").fullyAuthenticated()
