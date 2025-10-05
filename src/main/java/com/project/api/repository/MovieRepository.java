@@ -23,8 +23,8 @@ public interface MovieRepository extends JpaRepository<Note, NoteId> {
 //    @Query("SELECT n.owner, n.userId, count(n.userId) FROM Note as n GROUP BY n.owner, n.userId")
 //    List<Object> getUsers();
 
-    @Procedure(name = "getUserMovies")
-    List<Object> getUserMovies(@Param("user_id") String user_id);
+//    @Procedure(name = "getUserMovies")
+//    List<Object> getUserMovies(@Param("user_id") String user_id);
 
 //    @Procedure(name = "movies_bulk_upsert")
 //    List<Object> movies_bulk_upsert(@Param("json_movies") String moviesJson);
