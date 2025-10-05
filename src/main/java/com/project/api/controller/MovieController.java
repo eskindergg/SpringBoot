@@ -31,14 +31,14 @@ public class MovieController {
         return eventService.save(event);
     }
 
-    @PutMapping()
-    public List<Object> put(@RequestBody List<Object> movies) throws JsonProcessingException {
-        return movieService.bulkUpdate(movies);
-    }
+//    @PutMapping()
+//    public List<Object> put(@RequestBody List<Object> movies) throws JsonProcessingException {
+//        return movieService.bulkUpdate(movies);
+//    }
 
     @PutMapping("/upsert")
-    public List<Map<String, Object>> upsert(@RequestBody String movie) throws JsonProcessingException {
-        return movieService.movieUpsert(movie);
+    public List<Map<String, Object>> upsert(@RequestBody String movies) throws JsonProcessingException {
+        return movieService.movieBulkUpsert(movies);
     }
 
     @PostMapping("/populate")

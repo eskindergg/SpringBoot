@@ -48,18 +48,18 @@ public class MovieService {
         return this.adminNoteRepository.save(note);
     }
 
-    @Transactional
-    public List<Object> bulkUpdate(List<Object> movies) throws JsonProcessingException {
-        try {
-            String moviesJson = JsonHelper.convertToJson(movies);
-            return this.movieRepository.movies_bulk_upsert(moviesJson);
-        } catch (JpaSystemException ex) {
-
-            SQLException sqlEx = (SQLException) ex.getCause().getCause();
-            String SQL_STATE = sqlEx.getSQLState();
-        }
-        return null;
-    }
+//    @Transactional
+//    public List<Object> bulkUpdate(List<Object> movies) throws JsonProcessingException {
+//        try {
+//            String moviesJson = JsonHelper.convertToJson(movies);
+//            return this.movieRepository.movies_bulk_upsert(moviesJson);
+//        } catch (JpaSystemException ex) {
+//
+//            SQLException sqlEx = (SQLException) ex.getCause().getCause();
+//            String SQL_STATE = sqlEx.getSQLState();
+//        }
+//        return null;
+//    }
 
 //    @Transactional
 //    public List<Object> getUserMovies() throws JsonProcessingException {
@@ -129,7 +129,7 @@ public class MovieService {
 //        query.execute();
 ////        List<Map<String, Object>> result = query.getResultList();
 ////        return result;
-////        return this.movieRepository.movie_upsert(movie);
+////        return this.movieRepository.movie_upsert(movies);
 //       List<Tuple> tupleResults = query.getResultList();
 //
 //    // 5. Manually map the Tuple to the required List<Map<String, Object>>
@@ -147,11 +147,11 @@ public class MovieService {
 //        .collect(Collectors.toList());
 //    }
 @Transactional
-public List<Map<String, Object>> movieUpsert(String movie) {
+public List<Map<String, Object>> movieBulkUpsert(String movies) {
 
-    String sql = "CALL movie_upsert(?)";
+    String sql = "CALL movies_bulk_upsert(?)";
     Query query = entityManager.createNativeQuery(sql, Tuple.class);
-    query.setParameter(1, movie);
+    query.setParameter(1, movies);
     @SuppressWarnings("unchecked")
     List<Tuple> tupleResults = query.getResultList();
     return tupleResults.stream()

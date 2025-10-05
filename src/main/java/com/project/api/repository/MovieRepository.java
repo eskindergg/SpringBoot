@@ -26,11 +26,11 @@ public interface MovieRepository extends JpaRepository<Note, NoteId> {
     @Procedure(name = "getUserMovies")
     List<Object> getUserMovies(@Param("user_id") String user_id);
 
-    @Procedure(name = "movies_bulk_upsert")
-    List<Object> movies_bulk_upsert(@Param("json_movies") String moviesJson);
+//    @Procedure(name = "movies_bulk_upsert")
+//    List<Object> movies_bulk_upsert(@Param("json_movies") String moviesJson);
 
-    @Procedure(name = "movie_upsert")
-    List<Object> movie_upsert(@Param("movie_json") String movieJson);
+//    @Procedure(name = "movie_upsert")
+//    List<Object> movie_upsert(@Param("movie_json") String movieJson);
 
 //    @Procedure(name = "getUsersNotesCount")
 //    List<Object> getUsersNotesCount();
