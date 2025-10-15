@@ -3,9 +3,12 @@ package com.project.api.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,23 +22,39 @@ import static java.util.stream.Collectors.toList;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
     @Autowired
-    CorsConfig corsConfig;
+    private CorsConfig corsConfig;
+
+    // 👇 Public endpoints
+    @Bean
+    @Order(1)
+    public SecurityFilterChain publicEndpoints(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/api/movies/populate")
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfig))
+                .anonymous(Customizer.withDefaults());
+
+        return http.build();
+    }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Order(2)
+    public SecurityFilterChain securedEndpoints(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((auths) -> auths
-                        .requestMatchers("/**").fullyAuthenticated()
-                )
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .cors(cors -> cors.configurationSource(corsConfig))
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                );
+
         return http.build();
     }
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
-
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
 
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
