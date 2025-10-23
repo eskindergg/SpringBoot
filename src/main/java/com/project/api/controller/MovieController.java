@@ -31,6 +31,11 @@ public class MovieController {
         return movieService.getWatchedUserMovies();
     }
 
+    @PutMapping("/upsertWatched")
+    public List<Map<String, Object>> upsertWatched(@RequestBody String movies) throws JsonProcessingException {
+        return movieService.movieBulkUpsert(movies);
+    }
+
     @PostMapping()
     public Event post(@RequestBody Event event) {
         return eventService.save(event);
