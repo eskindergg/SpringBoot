@@ -26,6 +26,11 @@ public class MovieController {
         return movieService.getUserMovies();
     }
 
+    @GetMapping("/watched")
+    public List<Map<String, Object>> getUserWatchedMovies() {
+        return movieService.getWatchedUserMovies();
+    }
+
     @PostMapping()
     public Event post(@RequestBody Event event) {
         return eventService.save(event);

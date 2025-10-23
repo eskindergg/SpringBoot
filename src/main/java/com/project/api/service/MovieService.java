@@ -41,6 +41,27 @@ public class MovieService {
     }
 
     @Transactional
+    public List<Map<String, Object>> getWatchedUserMovies() {
+        String sql = "CALL getUserWatchedMovies(?)";
+        Query query = entityManager.createNativeQuery(sql, Tuple.class);
+        query.setParameter(1, CurrentAuthContext.getUserId().toString());
+        @SuppressWarnings("unchecked")
+        List<Tuple> tupleResults = query.getResultList();
+        return tupleResults.stream()
+                .map(tuple -> {
+                    Map<String, Object> rowMap = new java.util.HashMap<>();
+                    // Use getElements() to iterate through columns and aliases
+                    for (TupleElement<?> element : tuple.getElements()) {
+                        String alias = element.getAlias();
+                        Object value = tuple.get(alias);
+                        rowMap.put(alias, value);
+                    }
+                    return rowMap;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public List<Map<String, Object>> movieBulkUpsert(String movies) {
 
         String sql = "CALL movies_bulk_upsert(?)";
