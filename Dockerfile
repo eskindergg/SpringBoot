@@ -1,33 +1,37 @@
-# Use an official OpenJDK image with Alpine Linux for a small footprint
-FROM eclipse-temurin:17-jdk-alpine
+# --- STAGE 1: Build the JAR file ---
+# Use a more robust base image (e.g., Jammy/Debian instead of Alpine)
+FROM eclipse-temurin:17-jdk-jammy AS build
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the Gradle wrapper files
+# Copy necessary build files
 COPY gradlew .
 COPY gradle/wrapper/ /app/gradle/wrapper/
-
-# Copy the build file(s)
 COPY build.gradle settings.gradle /app/
+
+# Copy source code for building
+COPY src /app/src
 
 # Grant execution rights to the Gradle wrapper
 RUN chmod +x gradlew
 
-# Build the application (this downloads dependencies and runs the build)
-# The application source is not copied yet, so this step can be cached.
-# You might need to change 'build' to 'bootJar' or similar depending on your setup.
-RUN ./gradlew build -x test
-
-# Now copy the rest of your source code
-COPY src /app/src
-
-# Re-run the build to generate the final JAR file
+# Run the build command (the failure point)
 RUN ./gradlew bootJar -x test
 
-# Expose the port the Spring Boot app will listen on (default is 8080)
+
+# --- STAGE 2: Create a minimal runtime image ---
+# Use a small JRE image for the final runtime
+FROM eclipse-temurin:17-jre-jammy
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the generated JAR file from the build stage
+COPY --from=build /app/build/libs/*.jar app.jar
+
+# Expose the port (Render's default is 10000, but 8080 is the app default)
 EXPOSE 8080
 
 # Command to run the application
-# This assumes your main JAR is generated in build/libs/
-ENTRYPOINT ["java", "-jar", "/app/build/libs/*.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
