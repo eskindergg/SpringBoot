@@ -2,11 +2,14 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.3'
 	id 'io.spring.dependency-management' version '1.1.6'
-	id 'war'
+    // Removed the 'war' plugin to default to JAR packaging
 }
+
 group = 'com.project'
 version = '0.0.1-SNAPSHOT'
 
+// Fix: Change the required Java Toolchain version to 21
+// This aligns the project's compilation requirement with the Java 21 installed by Railpack.
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
@@ -23,7 +26,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 	implementation 'org.springframework.security:spring-security-oauth2-jose'
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	// Removed: providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    // Tomcat is now included as a standard 'implementation' dependency by spring-boot-starter-web
+    // and packaged inside the executable JAR.
+    
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
