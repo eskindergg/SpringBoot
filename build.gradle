@@ -12,7 +12,7 @@ version = '0.0.1-SNAPSHOT'
 // This aligns the project's compilation requirement with the Java 21 installed by Railpack.
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
