@@ -33,7 +33,7 @@ public class MovieController {
 
     @PutMapping("/upsertWatched")
     public List<Map<String, Object>> upsertWatched(@RequestBody String movies) throws JsonProcessingException {
-        return movieService.movieBulkUpsert(movies);
+        return movieService.watchedBulkUpsert(movies);
     }
 
     @PostMapping()
